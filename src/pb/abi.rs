@@ -31,6 +31,18 @@ pub mod command_request {
 }
 #[derive(PartialOrd)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CommandResponse {
+    #[prost(uint32, tag="1")]
+    pub status: u32,
+    #[prost(string, tag="2")]
+    pub message: ::prost::alloc::string::String,
+    #[prost(message, repeated, tag="3")]
+    pub values: ::prost::alloc::vec::Vec<Value>,
+    #[prost(message, repeated, tag="4")]
+    pub pairts: ::prost::alloc::vec::Vec<Kvpair>,
+}
+#[derive(PartialOrd)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     #[prost(oneof="value::Value", tags="1, 2, 3, 4, 5")]
     pub value: ::core::option::Option<value::Value>,

@@ -16,6 +16,13 @@ message CommandRequest{
     }
 }
 
+message CommandResponse{
+    uint32 status = 1;
+    string message = 2;
+    repeated Value values = 3;
+    repeated Kvpair pairts = 4;
+}
+
 message Value{
     oneof value{
         string string = 1;
