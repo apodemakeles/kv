@@ -32,6 +32,25 @@ impl CommandService for Hset {
     }
 }
 
+impl CommandService for Hmget {
+    fn execute(self, store: &impl Storage) -> CommandResponse {
+        let r = self
+            .keys
+            .iter()
+            .map(|k| {
+                store.get(&self.table, k).map(|v| Kvpair {
+                    key: k.into(),
+                    value: v,
+                })
+            })
+            .collect::<Result<Vec<Kvpair>, KvError>>();
+        match r {
+            Ok(v) => v.into(),
+            Err(e) => e.into(),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -89,12 +108,38 @@ mod tests {
         assert_res_ok(res, &[], pairs);
     }
 
-    // 从 Request 中得到 Response，目前处理 HGET/HGETALL/HSET
+    #[test]
+    fn hmget_should_work() {
+        let store = MemTable::new();
+        let cmds = vec![
+            CommandRequest::new_hset("score", "u1", 10.into()),
+            CommandRequest::new_hset("score", "u2", 8.into()),
+            CommandRequest::new_hset("score", "u3", 11.into()),
+            CommandRequest::new_hset("score", "u1", 6.into()),
+        ];
+        for cmd in cmds {
+            dispatch(cmd, &store);
+        }
+
+        let cmd = CommandRequest::new_hmget(
+            "score",
+            vec!["u1".to_string(), "u2".to_string(), "u3".to_string()],
+        );
+        let res = dispatch(cmd, &store);
+        let pairs = &[
+            Kvpair::new("u1", 6.into()),
+            Kvpair::new("u2", 8.into()),
+            Kvpair::new("u3", 11.into()),
+        ];
+        assert_res_ok(res, &[], pairs);
+    }
+
     fn dispatch(cmd: CommandRequest, store: &impl Storage) -> CommandResponse {
         match cmd.request_data.unwrap() {
             RequestData::Hget(v) => v.execute(store),
             RequestData::Hgetall(v) => v.execute(store),
             RequestData::Hset(v) => v.execute(store),
+            RequestData::Hmget(v) => v.execute(store),
             _ => todo!(),
         }
     }

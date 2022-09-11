@@ -1,6 +1,6 @@
 pub mod abi;
 
-use std::vec;
+use std::{process::Command, vec};
 
 use abi::{command_request::RequestData, *};
 use http::StatusCode;
@@ -28,6 +28,14 @@ impl CommandRequest {
         CommandRequest {
             request_data: Some(RequestData::Hgetall(Hgetall {
                 table: table.into(),
+            })),
+        }
+    }
+    pub fn new_hmget(table: impl Into<String>, keys: Vec<String>) -> Self {
+        CommandRequest {
+            request_data: Some(RequestData::Hmget(Hmget {
+                table: table.into(),
+                keys: keys,
             })),
         }
     }
