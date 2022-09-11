@@ -39,6 +39,14 @@ impl CommandRequest {
             })),
         }
     }
+    pub fn new_hmset(table: impl Into<String>, pairs: Vec<Kvpair>) -> Self {
+        CommandRequest {
+            request_data: Some(RequestData::Hmset(Hmset {
+                table: table.into(),
+                pairs: pairs,
+            })),
+        }
+    }
 }
 
 impl Kvpair {
@@ -46,6 +54,13 @@ impl Kvpair {
         Self {
             key: key.into(),
             value: Some(value),
+        }
+    }
+
+    pub fn empty_value(key: impl Into<String>) -> Self {
+        Self {
+            key: key.into(),
+            value: None,
         }
     }
 }
