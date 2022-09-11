@@ -39,7 +39,7 @@ pub struct CommandResponse {
     #[prost(message, repeated, tag="3")]
     pub values: ::prost::alloc::vec::Vec<Value>,
     #[prost(message, repeated, tag="4")]
-    pub pairts: ::prost::alloc::vec::Vec<Kvpair>,
+    pub pairs: ::prost::alloc::vec::Vec<Kvpair>,
 }
 #[derive(PartialOrd)]
 #[derive(Clone, PartialEq, ::prost::Message)]

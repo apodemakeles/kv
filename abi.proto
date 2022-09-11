@@ -20,7 +20,7 @@ message CommandResponse{
     uint32 status = 1;
     string message = 2;
     repeated Value values = 3;
-    repeated Kvpair pairts = 4;
+    repeated Kvpair pairs = 4;
 }
 
 message Value{
