@@ -127,7 +127,6 @@ impl CommandService for Hmexist {
 
 #[cfg(test)]
 mod tests {
-    use http::Request;
 
     use super::*;
     use crate::{command_request::RequestData, memory::MemTable};
@@ -377,7 +376,6 @@ mod tests {
             RequestData::Hmdel(v) => v.execute(store),
             RequestData::Hexist(v) => v.execute(store),
             RequestData::Hmexist(v) => v.execute(store),
-            _ => todo!(),
         }
     }
 

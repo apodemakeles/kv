@@ -1,6 +1,6 @@
 pub mod abi;
 
-use std::{process::Command, vec};
+use std::vec;
 
 use abi::{command_request::RequestData, *};
 use http::StatusCode;
