@@ -47,6 +47,38 @@ impl CommandRequest {
             })),
         }
     }
+    pub fn new_hdel(table: impl Into<String>, key: impl Into<String>) -> Self {
+        CommandRequest {
+            request_data: Some(RequestData::Hdel(Hdel {
+                table: table.into(),
+                key: key.into(),
+            })),
+        }
+    }
+    pub fn new_hmdel(table: impl Into<String>, keys: Vec<String>) -> Self {
+        CommandRequest {
+            request_data: Some(RequestData::Hmdel(Hmdel {
+                table: table.into(),
+                keys: keys,
+            })),
+        }
+    }
+    pub fn new_hexist(table: impl Into<String>, key: impl Into<String>) -> Self {
+        CommandRequest {
+            request_data: Some(RequestData::Hexist(Hexist {
+                table: table.into(),
+                key: key.into(),
+            })),
+        }
+    }
+    pub fn new_hmexist(table: impl Into<String>, keys: Vec<String>) -> Self {
+        CommandRequest {
+            request_data: Some(RequestData::Hmexist(Hmexist {
+                table: table.into(),
+                keys: keys,
+            })),
+        }
+    }
 }
 
 impl Kvpair {
@@ -89,11 +121,29 @@ impl From<i32> for Value {
     }
 }
 
+impl From<bool> for Value {
+    fn from(b: bool) -> Self {
+        Self {
+            value: Some(value::Value::Bool(b)),
+        }
+    }
+}
+
 impl From<Value> for CommandResponse {
     fn from(v: Value) -> Self {
         Self {
             status: StatusCode::OK.as_u16() as _,
             values: vec![v],
+            ..Default::default()
+        }
+    }
+}
+
+impl From<Vec<Value>> for CommandResponse {
+    fn from(v: Vec<Value>) -> Self {
+        Self {
+            status: StatusCode::OK.as_u16() as _,
+            values: v,
             ..Default::default()
         }
     }
@@ -125,5 +175,23 @@ impl From<KvError> for CommandResponse {
         }
 
         result
+    }
+}
+
+impl From<Result<Vec<Value>, KvError>> for CommandResponse {
+    fn from(r: Result<Vec<Value>, KvError>) -> Self {
+        match r {
+            Ok(v) => v.into(),
+            Err(e) => e.into(),
+        }
+    }
+}
+
+impl From<Result<Vec<Kvpair>, KvError>> for CommandResponse {
+    fn from(r: Result<Vec<Kvpair>, KvError>) -> Self {
+        match r {
+            Ok(v) => v.into(),
+            Err(e) => e.into(),
+        }
     }
 }
