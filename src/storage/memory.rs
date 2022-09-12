@@ -1,5 +1,5 @@
 use crate::{KvError, Kvpair, Value};
-use dashmap::{mapref::one::Ref, DashMap};
+use dashmap::{iter::Iter, mapref::one::Ref, DashMap};
 
 use super::Storage;
 
@@ -58,7 +58,30 @@ impl Storage for MemTable {
             .collect::<Vec<_>>())
     }
 
-    fn get_iter(&self, _: &str) -> Result<Box<dyn Iterator<Item = Kvpair>>, KvError> {
-        todo!()
+    fn get_iter(&self, table: &str) -> Result<Box<dyn Iterator<Item = Kvpair>>, KvError> {
+        let table = self.get_or_create_table(table);
+        let iter = MemStoreIter {
+            inner: table.value().iter(),
+        };
+
+        Ok(Box::new(iter))
+    }
+}
+
+// type ValueMap = DashMap<String, Value, RandomState>;
+struct MemStoreIter<'a> {
+    inner: Iter<'a, String, Value>,
+}
+
+impl<'a> Iterator for MemStoreIter<'a> {
+    type Item = Kvpair;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let x = self.inner.next();
+        if let Some(v) = x {
+            return Some(Kvpair::new(v.key(), v.value().clone()));
+        }
+
+        None
     }
 }
