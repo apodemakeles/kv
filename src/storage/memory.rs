@@ -1,6 +1,6 @@
 use std::collections::linked_list::Iter;
 
-use crate::{KvError, Kvpair, Value};
+use crate::{KvError, Kvpair, StorageIter, Value};
 use dashmap::{mapref::one::Ref, DashMap};
 
 use super::Storage;
@@ -62,7 +62,7 @@ impl Storage for MemTable {
 
     fn get_iter(&self, table: &str) -> Result<Box<dyn Iterator<Item = Kvpair>>, KvError> {
         let table = self.get_or_create_table(table).clone();
-        let iter = table.into_iter().map(|data| data.into());
+        let iter = StorageIter::new(table.into_iter());
 
         Ok(Box::new(iter))
     }
