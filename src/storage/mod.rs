@@ -70,4 +70,25 @@ mod tests {
             ]
         )
     }
+
+    #[test]
+    fn memtable_iter_should_work() {
+        let store = MemTable::new();
+        test_get_iter(store);
+    }
+
+    fn test_get_iter(store: impl Storage) {
+        store.set("t2", "k1".into(), "v1".into()).unwrap();
+        store.set("t2", "k2".into(), "v2".into()).unwrap();
+        let mut data: Vec<_> = store.get_iter("t2").unwrap().collect();
+        data.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+        assert_eq!(
+            data,
+            vec![
+                Kvpair::new("k1", "v1".into()),
+                Kvpair::new("k2", "v2".into())
+            ]
+        )
+    }
 }

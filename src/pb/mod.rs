@@ -195,3 +195,9 @@ impl From<Result<Vec<Kvpair>, KvError>> for CommandResponse {
         }
     }
 }
+
+impl From<(String, Value)> for Kvpair {
+    fn from(tuple: (String, Value)) -> Self {
+        Kvpair::new(tuple.0, tuple.1)
+    }
+}
