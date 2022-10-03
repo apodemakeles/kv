@@ -11,6 +11,8 @@ tracing = "0.1"   # 日志处理
 thiserror = "1.0"
 dashmap = "5.4.0"
 http = "0.2"
+sled = "0.34"
+tempfile = "3"
 
 [dev-dependencies]
 anyhow = "1" # 错误处理
