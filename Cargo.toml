@@ -26,6 +26,7 @@ tokio = { version = "1", features = [
     "net",
 ] } # 异步网络库
 tracing-subscriber = "0.2" # 日志处理
+tokio-util = { version = "0.7.0", features = ["codec"] }
 
 [build-dependencies]
 prost-build = "0.8" # 编译 protobuf
