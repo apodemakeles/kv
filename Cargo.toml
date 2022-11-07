@@ -5,14 +5,16 @@ version = "0.1.0"
 edition = "2018"
 
 [dependencies]
-bytes = "1"       # 高效处理网络 buffer 的库
-prost = "0.8"     # 处理 protobuf 的代码
-tracing = "0.1"   # 日志处理
+bytes = "1"                                             # 高效处理网络 buffer 的库
+prost = "0.8"                                           # 处理 protobuf 的代码
+tracing = "0.1"                                         # 日志处理
 thiserror = "1.0"
 dashmap = "5.4.0"
 http = "0.2"
 sled = "0.34"
 tempfile = "3"
+tokio-util = { version = "0.7.0", features = ["full"] }
+flate2 = "1"
 
 [dev-dependencies]
 anyhow = "1" # 错误处理
@@ -26,7 +28,7 @@ tokio = { version = "1", features = [
     "net",
 ] } # 异步网络库
 tracing-subscriber = "0.2" # 日志处理
-tokio-util = { version = "0.7.0", features = ["codec"] }
+
 
 [build-dependencies]
 prost-build = "0.8" # 编译 protobuf
