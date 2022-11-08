@@ -1,4 +1,4 @@
-mod frame;
+pub mod frame;
 
 use bytes::{Bytes, BytesMut};
 pub use frame::FrameCoder;
