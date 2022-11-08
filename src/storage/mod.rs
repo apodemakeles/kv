@@ -76,7 +76,6 @@ mod tests {
         assert!(store.contains("t1", "hello1").unwrap());
         assert!(store.contains("t2", "hello").unwrap());
 
-        let v = store.del("t1", "hello");
         assert!(store.contains("t2", "hello").unwrap());
 
         assert_eq!(None, store.del("t1", "hello1").unwrap());

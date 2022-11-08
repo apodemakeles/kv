@@ -14,7 +14,9 @@ http = "0.2"
 sled = "0.34"
 tempfile = "3"
 tokio-util = { version = "0.7.0", features = ["full"] }
+tokio = { version = "1", features = ["full"] }          # 异步网络库
 flate2 = "1"
+
 
 [dev-dependencies]
 anyhow = "1" # 错误处理
