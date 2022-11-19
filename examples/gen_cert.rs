@@ -11,6 +11,7 @@ struct CertPem {
 #[tokio::main]
 async fn main() -> Result<()> {
     let ca_pem = create_ca()?;
+    gen_files(&ca_pem).await?;
     let ca = load_ca(&ca_pem.cert, &ca_pem.key)?;
     let pem = create_cert(&ca, &["kvserver.acme.inc"], "Acme KV server", false)?;
     gen_files(&pem).await?;
