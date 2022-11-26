@@ -4,12 +4,12 @@ pub mod tls;
 
 pub use frame::FrameCoder;
 use futures::{SinkExt, StreamExt};
-use tokio::io::{AsyncRead, AsyncWrite, AsyncWriteExt};
+use tokio::io::{AsyncRead, AsyncWrite};
 use tracing::info;
 
 use crate::{CommandRequest, CommandResponse, KvError, Service};
 
-use self::{frame::read_frame, stream::ProstStream};
+use self::stream::ProstStream;
 
 pub struct ProstServerStream<S> {
     inner: ProstStream<S, CommandRequest, CommandResponse>,
