@@ -1,4 +1,3 @@
-use std::convert::TryFrom;
 use std::{io::Cursor, sync::Arc};
 
 use tokio::io::{AsyncRead, AsyncWrite};
@@ -147,7 +146,6 @@ mod tests {
     };
 
     const CA_CERT: &str = include_str!("../../fixtures/ca.cert");
-    const CA_KEY: &str = include_str!("../../fixtures/ca.key");
     const CLIENT_CERT: &str = include_str!("../../fixtures/client.cert");
     const CLIENT_KEY: &str = include_str!("../../fixtures/client.key");
     const SERVER_CERT: &str = include_str!("../../fixtures/server.cert");
